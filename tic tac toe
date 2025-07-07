@@ -1,0 +1,52 @@
+
+board = [["-" for _ in range(3)] for _ in range(3)]
+def boards(*args, **kwargs):
+
+
+    print("  0   1   2")
+    for i, row in enumerate(board):
+        print(f"{i}", " | ".join(row))
+        if i != len(board) - 1:
+            print("", "." * 11)
+
+def move(board, player):
+    while True:
+            row = int(input(f"Введите номер строки для {player}. от 0 до 2:"))
+            col = int(input(f"Введите номер столба для {player}. от 0 до 2:"))
+            if 0 <= row <= 2 and 0 <= col <= 2 and board[row][col] == "-":
+                return row, col
+            else:
+                print("Такого хода нет!")
+
+
+def win(board, player):
+    for i in range(3):
+        if all(board[i][j] == player for j in range(3)) or all(board[j][i] == player for j in range(3)):
+            return True
+    if all(board[i][i] == player for i in range(3)) or all(board[i][2 - i] == player for i in range(3)):
+        return True
+    return False
+
+def draw(board):
+    return all(cell != "-" for row in board for cell in row)
+
+def game():
+    boards()
+    player = "O"
+    game_over = False
+    while not game_over:
+
+        row, col = move(board, player)
+        board[row][col] = player
+        boards(board)
+        if win(board, player):
+
+            print(f"Игрок {player} выиграл!")
+            game_over = True
+        elif draw(board):
+
+            print("Ничья!")
+            game_over = True
+        else:
+            player = "O" if player == "X" else "X"
+game()
